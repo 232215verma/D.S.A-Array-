@@ -1,0 +1,45 @@
+//PANTERS PARTITION PROBLEM
+#include<iostream>
+#include<vector>
+using namespace std;
+bool ispossible(vector<int>&arr,int n,int m,int maxallowedtime){
+	int painter=1,time=0;
+	for(int i=0;i<n;i++){
+		if(arr[i]>maxallowedtime){
+			return -1;
+		}
+		if(time+arr[i]<=maxallowedtime){
+			time+=arr[i];
+		}else{
+			painter++;
+			time=arr[i];
+		}
+	}
+return 	painter>m? false:true;
+}
+int minallocatetime(vector<int>&arr,int n,int m){
+	int maxval=INT_MIN,sum=0;
+	int ans=-1;
+	for(int i=0;i<n;i++){
+		sum+=arr[i];
+		maxval=max(maxval,arr[i]);
+	}
+	int st=maxval,end=sum;
+	while(st<=end){
+		int mid=st+(end-st)/2;
+		if(ispossible(arr,n,m,mid)){
+			ans=mid;
+			end=mid-1;
+		}else{
+			st=mid+1;
+		}
+		
+	}
+	return ans;
+}
+int main(){
+	vector<int> arr={10,10,10,10};
+	int n=4,m=2;
+	cout<<minallocatetime(arr,n,m);
+	
+}
